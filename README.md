@@ -1,2 +1,2 @@
 # STM32F446RE_PROFET2_Shield
-Infineon PROFET2 Shield Code to STM32Cube IDE
+STM32Cube IDE code for Infineon ProFET2 shield.
