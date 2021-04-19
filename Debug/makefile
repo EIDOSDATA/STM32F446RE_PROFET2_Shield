@@ -1,5 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
+# Toolchain: GNU Tools for STM32 (9-2020-q2-update)
 ################################################################################
 
 -include ../makefile.init
@@ -28,6 +29,12 @@ endif
 
 -include ../makefile.defs
 
+OPTIONAL_TOOL_DEPS := \
+$(wildcard ../makefile.defs) \
+$(wildcard ../makefile.init) \
+$(wildcard ../makefile.targets) \
+
+
 BUILD_ARTIFACT_NAME := PROFET2_12V_Shield_F446RE
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX := 
@@ -54,22 +61,22 @@ all: main-build
 main-build: PROFET2_12V_Shield_F446RE.elf secondary-outputs
 
 # Tool invocations
-PROFET2_12V_Shield_F446RE.elf: $(OBJS) $(USER_OBJS) C:\Users\eidos\Desktop\PROFET2_12V_Shield_F446RE\STM32F446RETX_FLASH.ld
-	arm-none-eabi-gcc -o "PROFET2_12V_Shield_F446RE.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\eidos\Desktop\PROFET2_12V_Shield_F446RE\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="PROFET2_12V_Shield_F446RE.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
+PROFET2_12V_Shield_F446RE.elf: $(OBJS) $(USER_OBJS) C:\Users\eidos\Desktop\STM32F446RE_PROFET2_Shield\STM32F446RETX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "PROFET2_12V_Shield_F446RE.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\eidos\Desktop\STM32F446RE_PROFET2_Shield\STM32F446RETX_FLASH.ld" --specs=nosys.specs -Wl,-Map="PROFET2_12V_Shield_F446RE.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-default.size.stdout: $(EXECUTABLES)
+default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	arm-none-eabi-size  $(EXECUTABLES)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-PROFET2_12V_Shield_F446RE.list: $(EXECUTABLES)
+PROFET2_12V_Shield_F446RE.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "PROFET2_12V_Shield_F446RE.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-PROFET2_12V_Shield_F446RE.bin: $(EXECUTABLES)
+PROFET2_12V_Shield_F446RE.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "PROFET2_12V_Shield_F446RE.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
