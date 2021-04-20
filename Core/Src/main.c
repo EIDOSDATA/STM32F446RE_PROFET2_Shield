@@ -148,7 +148,7 @@ ArduinoShield Shield =
 		.status_LED4 = 0,         // LED4 status
 
 		.max_adc_reading = 1024.0, // ADC = 10 bit -> 0x400 -> 1024 -> 1 digit = 0.0048828125V resolution
-		.adc_reference_voltage = 3.17,         // ADC reference voltage = 5V
+		.adc_reference_voltage = 3.3,         // ADC reference voltage = 5V
 
 		.A0_adc_raw_value_PushButton = 0, // ADC raw value reading Analog Input A0 (push botton)
 		.A1_adc_raw_value_Vbb = 0, // ADC raw value reading Analog Input A1 (supply voltage VS)
@@ -276,20 +276,20 @@ void ReadADC(char num)
 
 	/* Change GPIO Channel */
 	/*
-	switch (num)
-	{
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-		break;
-	default:
-		HAL_GPIO_WritePin(DEN1_DEN3_GPIO_Port, DEN1_DEN3_Pin, GPIO_PIN_SET); // Select sense signal from PROFET+2 device U1 and U3 (DEN1_DEN3= high,DEN2_DEN4 = low)
-		HAL_GPIO_WritePin(DEN2_DEN4_GPIO_Port, DEN2_DEN4_Pin, GPIO_PIN_RESET); // Select sense signal from PROFET+2 device U1 and U3
-		HAL_GPIO_WritePin(OLOFF_GPIO_Port, OLOFF_Pin, GPIO_PIN_RESET); // open load in state OFF diagnosis disabled
-		HAL_Delay(1); // generously delay of 1ms to give the PROFET+2 time to provide the sense signal
-		break;
-	}*/
+	 switch (num)
+	 {
+	 case '1':
+	 case '2':
+	 case '3':
+	 case '4':
+	 break;
+	 default:
+	 HAL_GPIO_WritePin(DEN1_DEN3_GPIO_Port, DEN1_DEN3_Pin, GPIO_PIN_SET); // Select sense signal from PROFET+2 device U1 and U3 (DEN1_DEN3= high,DEN2_DEN4 = low)
+	 HAL_GPIO_WritePin(DEN2_DEN4_GPIO_Port, DEN2_DEN4_Pin, GPIO_PIN_RESET); // Select sense signal from PROFET+2 device U1 and U3
+	 HAL_GPIO_WritePin(OLOFF_GPIO_Port, OLOFF_Pin, GPIO_PIN_RESET); // open load in state OFF diagnosis disabled
+	 HAL_Delay(1); // generously delay of 1ms to give the PROFET+2 time to provide the sense signal
+	 break;
+	 }*/
 
 // tsIS(DIAG) <= 3 x (tON_max + tsIS(ON)_max) = 3 x (210µs + 40) = 750µs!
 // Vbb, ADC 1,3 READ
@@ -305,21 +305,21 @@ void ReadADC(char num)
 
 	/* Change GPIO Channel */
 	/*
-	switch (num)
-	{
-	case '1':
-	case '2':
-	case '3':
-	case '4':
-		break;
-	default:
-		HAL_GPIO_WritePin(DEN1_DEN3_GPIO_Port, DEN1_DEN3_Pin, GPIO_PIN_RESET); // Select sense signal from PROFET+2 device U2 and U4 (DEN1_DEN3= low, DEN2_DEN4 = high)
-		HAL_GPIO_WritePin(DEN2_DEN4_GPIO_Port, DEN2_DEN4_Pin, GPIO_PIN_SET); // Select sense signal from PROFET+2 device U2 and U4
-		HAL_GPIO_WritePin(OLOFF_GPIO_Port, OLOFF_Pin, GPIO_PIN_RESET); // open load in state OFF diagnosis disabled
-		HAL_Delay(1); // generously delay of 1ms to give the PROFET+2 time to provide the sense signal
-		break;
-	}
-*/
+	 switch (num)
+	 {
+	 case '1':
+	 case '2':
+	 case '3':
+	 case '4':
+	 break;
+	 default:
+	 HAL_GPIO_WritePin(DEN1_DEN3_GPIO_Port, DEN1_DEN3_Pin, GPIO_PIN_RESET); // Select sense signal from PROFET+2 device U2 and U4 (DEN1_DEN3= low, DEN2_DEN4 = high)
+	 HAL_GPIO_WritePin(DEN2_DEN4_GPIO_Port, DEN2_DEN4_Pin, GPIO_PIN_SET); // Select sense signal from PROFET+2 device U2 and U4
+	 HAL_GPIO_WritePin(OLOFF_GPIO_Port, OLOFF_Pin, GPIO_PIN_RESET); // open load in state OFF diagnosis disabled
+	 HAL_Delay(1); // generously delay of 1ms to give the PROFET+2 time to provide the sense signal
+	 break;
+	 }
+	 */
 	/* Vbb, ADC 2,4 READ */
 	HAL_ADC_Start_DMA(&hadc1, ADC_Value, 3);
 	for (int i = 0; i < 3; i++)
@@ -679,37 +679,36 @@ void WriteShieldIN(uint8_t _In1, uint8_t _In2, uint8_t _In3, uint8_t _In4,
 
 void PrintStatus()
 {
-	sprintf(UBuf, "=================================\r\n\r\n"
-			"OUT1: %d\tLED1: %d\r\n"
-			"OUT2: %d\tLED2: %d\r\n"
-			"OUT3: %d\tLED3: %d\r\n"
-			"OUT4: %d\tLED4: %d\r\n\r\n"
-			"----------\r\n\r\n", Shield.status_In_U1, Shield.status_LED1,
-			Shield.status_In_U2, Shield.status_LED2, Shield.status_In_U3,
-			Shield.status_LED3, Shield.status_In_U4, Shield.status_LED4);
+	sprintf(UBuf,
+			"===================================================================================================\r\n"
+					"OUT1: %d\tOUT2: %d\tOUT3: %d\tOUT4: %d\t\tLED1: %d\tLED2: %d\tLED3: %d\tLED4: %d\t\r\n"
+					"----------------------------------------------------------------------------------------------------\r\n",
+			Shield.status_In_U1, Shield.status_In_U2, Shield.status_In_U3,
+			Shield.status_In_U4, Shield.status_LED1, Shield.status_LED2,
+			Shield.status_LED3, Shield.status_LED4);
 	HAL_UART_Transmit(&huart2, (uint8_t*) UBuf, strlen(UBuf), 1000);
 }
 
 void PrintADC()
 {
-	sprintf(UBuf, "Vbb - ADC raw value : %d\r\n"
-			"ADC-Voltage (0-5V) : %f\r\n"
+	sprintf(UBuf, "Vbb - ADC raw value : %d\t"
+			"ADC-Voltage (0-3.3V) : %f\t"
 			"Vbb-Voltage: %f\r\n\r\n"
 
-			"Out 1 - ADC raw value : %d\r\n"
-			"ADC-Voltage (0-5V) : %f\r\n"
+			"Out 1 - ADC raw value : %d\t"
+			"ADC-Voltage (0-3.3V) : %f\t"
 			"Sense current OUT 1 : %f\r\n\r\n"
 
-			"Out 2 - ADC raw value : %d\r\n"
-			"ADC-Voltage (0-5V) : %f\r\n"
+			"Out 2 - ADC raw value : %d\t"
+			"ADC-Voltage (0-3.3V) : %f\t"
 			"Sense current OUT 2 : %f\r\n\r\n"
 
-			"Out 3 - ADC raw value : %d\r\n"
-			"ADC-Voltage (0-5V) : %f\r\n"
+			"Out 3 - ADC raw value : %d\t"
+			"ADC-Voltage (0-3.3V) : %f\t"
 			"Sense current OUT 3 : %f\r\n\r\n"
 
-			"Out 4 - ADC raw value : %d\r\n"
-			"ADC-Voltage (0-5V) : %f\r\n"
+			"Out 4 - ADC raw value : %d\t"
+			"ADC-Voltage (0-3.3V) : %f\t"
 			"Sense current OUT 4 : %f\r\n\r\n"
 
 	, Shield.A1_adc_raw_value_Vbb, Shield.A1_Vbb_ADC_Voltage,
