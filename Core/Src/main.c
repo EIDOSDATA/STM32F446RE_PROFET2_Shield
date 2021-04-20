@@ -220,25 +220,21 @@ void enableDiag(char num)
 {
 	if (num == '1')
 	{
-		HAL_GPIO_WritePin(IN1_GPIO_Port, IN1_Pin, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(DEN1_DEN3_GPIO_Port, DEN1_DEN3_Pin, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(DEN2_DEN4_GPIO_Port, DEN2_DEN4_Pin, GPIO_PIN_RESET);
 	}
 	else if (num == '2')
 	{
-		HAL_GPIO_WritePin(IN2_GPIO_Port, IN2_Pin, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(DEN1_DEN3_GPIO_Port, DEN1_DEN3_Pin, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(DEN2_DEN4_GPIO_Port, DEN2_DEN4_Pin, GPIO_PIN_SET);
 	}
 	else if (num == '3')
 	{
-		HAL_GPIO_WritePin(IN3_GPIO_Port, IN3_Pin, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(DEN1_DEN3_GPIO_Port, DEN1_DEN3_Pin, GPIO_PIN_SET);
 		HAL_GPIO_WritePin(DEN2_DEN4_GPIO_Port, DEN2_DEN4_Pin, GPIO_PIN_RESET);
 	}
 	else if (num == '4')
 	{
-		HAL_GPIO_WritePin(IN4_GPIO_Port, IN4_Pin, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(DEN1_DEN3_GPIO_Port, DEN1_DEN3_Pin, GPIO_PIN_RESET);
 		HAL_GPIO_WritePin(DEN2_DEN4_GPIO_Port, DEN2_DEN4_Pin, GPIO_PIN_SET);
 	}
@@ -279,6 +275,7 @@ void ReadADC(char num)
 	HAL_ADC_Stop(&hadc1);
 
 	/* Change GPIO Channel */
+	/*
 	switch (num)
 	{
 	case '1':
@@ -292,12 +289,12 @@ void ReadADC(char num)
 		HAL_GPIO_WritePin(OLOFF_GPIO_Port, OLOFF_Pin, GPIO_PIN_RESET); // open load in state OFF diagnosis disabled
 		HAL_Delay(1); // generously delay of 1ms to give the PROFET+2 time to provide the sense signal
 		break;
-	}
+	}*/
 
 // tsIS(DIAG) <= 3 x (tON_max + tsIS(ON)_max) = 3 x (210µs + 40) = 750µs!
 // Vbb, ADC 1,3 READ
-	HAL_ADC_Start_DMA(&hadc1, ADC_Value, 4);
-	for (int i = 0; i < 4; i++)
+	HAL_ADC_Start_DMA(&hadc1, ADC_Value, 3);
+	for (int i = 0; i < 3; i++)
 	{
 		HAL_DMA_PollForTransfer(&hdma_adc1, HAL_DMA_FULL_TRANSFER, 1000);
 	}
@@ -307,6 +304,7 @@ void ReadADC(char num)
 	Shield.A3_adc_raw_value_IS_3 = ADC_Value[2]; // read analog value from analog input A3 -> device U3 -> sense IS3
 
 	/* Change GPIO Channel */
+	/*
 	switch (num)
 	{
 	case '1':
@@ -321,10 +319,10 @@ void ReadADC(char num)
 		HAL_Delay(1); // generously delay of 1ms to give the PROFET+2 time to provide the sense signal
 		break;
 	}
-
+*/
 	/* Vbb, ADC 2,4 READ */
-	HAL_ADC_Start_DMA(&hadc1, ADC_Value, 4);
-	for (int i = 0; i < 4; i++)
+	HAL_ADC_Start_DMA(&hadc1, ADC_Value, 3);
+	for (int i = 0; i < 3; i++)
 	{
 		HAL_DMA_PollForTransfer(&hdma_adc1, HAL_DMA_FULL_TRANSFER, 1000);
 	}
@@ -592,6 +590,7 @@ void PortStatus(char num)
 		break;
 	default:
 		readIS(num);
+		break;
 	}
 
 }
